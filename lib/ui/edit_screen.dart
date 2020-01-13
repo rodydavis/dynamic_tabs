@@ -133,11 +133,11 @@ class _EditScreenState extends State<EditScreen> {
                   children: _tabs
                       .map(
                         (t) => GridTabItem(
-                              active: _tabs.indexOf(t) >= widget.maxTabs,
-                              tab: t,
-                              adaptive: widget.adaptive,
-                              draggable: true,
-                            ),
+                          active: _tabs.indexOf(t) >= widget.maxTabs,
+                          tab: t,
+                          adaptive: widget.adaptive,
+                          draggable: true,
+                        ),
                       )
                       .toList(),
                 ),
@@ -204,7 +204,7 @@ class _BottomEditableTabBarState extends State<BottomEditableTabBar> {
           });
           return true;
         },
-        onLeave: (String data) {
+        onLeave: (data) {
           setState(() {
             _previewIndex = null;
           });
