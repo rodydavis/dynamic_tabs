@@ -154,30 +154,30 @@ class MaterialView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TabState>(
       builder: (context, model, child) => Scaffold(
-            body: ContentView(
-              routes: routes,
-              adaptive: adaptive,
-              breakpoint: breakpoint,
-              masterDetailOnMoreTab: masterDetailOnMoreTab,
-              moreTabAccentColor: moreTabAccentColor,
-              moreTabPrimaryColor: moreTabPrimaryColor,
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              selectedItemColor: selectedColor,
-              items: model.showEditTab
-                  ? (model.mainTabs.map((t) => t.tab).toList()
-                    ..add(BottomNavigationBarItem(
-                      title: Text("More"),
-                      icon: Icon(Icons.more_horiz),
-                    )))
-                  : model.allTabs.map((t) => t.tab).toList(),
-              currentIndex: model.adjustedIndex,
-              onTap: model.changeTab,
-              fixedColor: backgroundColor ?? Theme.of(context).primaryColor,
-              type: type,
-              // unselectedItemColor: unselectedItemColor ?? Colors.grey,
-            ),
-          ),
+        body: ContentView(
+          routes: routes,
+          adaptive: adaptive,
+          breakpoint: breakpoint,
+          masterDetailOnMoreTab: masterDetailOnMoreTab,
+          moreTabAccentColor: moreTabAccentColor,
+          moreTabPrimaryColor: moreTabPrimaryColor,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: selectedColor,
+          items: model.showEditTab
+              ? (model.mainTabs.map((t) => t.tab).toList()
+                ..add(BottomNavigationBarItem(
+                  title: Text("More"),
+                  icon: Icon(Icons.more_horiz),
+                )))
+              : model.allTabs.map((t) => t.tab).toList(),
+          currentIndex: model.adjustedIndex,
+          onTap: model.changeTab,
+          fixedColor: backgroundColor ?? Theme.of(context).primaryColor,
+          type: type,
+          // unselectedItemColor: unselectedItemColor ?? Colors.grey,
+        ),
+      ),
     );
   }
 }
@@ -204,39 +204,39 @@ class DesktopView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TabState>(
       builder: (context, model, child) => Scaffold(
-            body: ContentView(
-              routes: routes,
-              adaptive: adaptive,
-              breakpoint: breakpoint,
-              masterDetailOnMoreTab: masterDetailOnMoreTab,
-              moreTabAccentColor: moreTabAccentColor,
-              moreTabPrimaryColor: moreTabPrimaryColor,
-            ),
-            drawer: Drawer(
+        body: ContentView(
+          routes: routes,
+          adaptive: adaptive,
+          breakpoint: breakpoint,
+          masterDetailOnMoreTab: masterDetailOnMoreTab,
+          moreTabAccentColor: moreTabAccentColor,
+          moreTabPrimaryColor: moreTabPrimaryColor,
+        ),
+        drawer: Drawer(
+          child: Container(
+            child: SafeArea(
               child: Container(
-                child: SafeArea(
-                  child: Container(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          for (var i = 0; i < model.allTabs.length; i++) ...[
-                            ListTile(
-                              selected: i == model.currentIndex,
-                              leading: model.allTabs[i].tab.icon,
-                              title: model.allTabs[i].tab.title,
-                              onTap: () {
-                                model.changeTab(i);
-                              },
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      for (var i = 0; i < model.allTabs.length; i++) ...[
+                        ListTile(
+                          selected: i == model.currentIndex,
+                          leading: model.allTabs[i].tab.icon,
+                          title: model.allTabs[i].tab.title,
+                          onTap: () {
+                            model.changeTab(i);
+                          },
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               ),
             ),
           ),
+        ),
+      ),
     );
   }
 }
@@ -269,30 +269,30 @@ class CupertinoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TabState>(
       builder: (context, model, child) => CupertinoTabScaffold(
-            tabBuilder: (BuildContext context, int index) {
-              return ContentView(
-                routes: routes,
-                adaptive: adaptive,
-                breakpoint: breakpoint,
-                masterDetailOnMoreTab: masterDetailOnMoreTab,
-                moreTabAccentColor: moreTabAccentColor,
-                moreTabPrimaryColor: moreTabPrimaryColor,
-              );
-            },
-            tabBar: CupertinoTabBar(
-              activeColor: selectedColor,
-              items: model.showEditTab
-                  ? (model.mainTabs.map((t) => t.tab).toList()
-                    ..add(BottomNavigationBarItem(
-                      title: Text("More"),
-                      icon: Icon(Icons.more_horiz),
-                    )))
-                  : model.allTabs.map((t) => t.tab).toList(),
-              currentIndex: model.adjustedIndex,
-              onTap: model.changeTab,
-              backgroundColor: backgroundColor,
-            ),
-          ),
+        tabBuilder: (BuildContext context, int index) {
+          return ContentView(
+            routes: routes,
+            adaptive: adaptive,
+            breakpoint: breakpoint,
+            masterDetailOnMoreTab: masterDetailOnMoreTab,
+            moreTabAccentColor: moreTabAccentColor,
+            moreTabPrimaryColor: moreTabPrimaryColor,
+          );
+        },
+        tabBar: CupertinoTabBar(
+          activeColor: selectedColor,
+          items: model.showEditTab
+              ? (model.mainTabs.map((t) => t.tab).toList()
+                ..add(BottomNavigationBarItem(
+                  title: Text("More"),
+                  icon: Icon(Icons.more_horiz),
+                )))
+              : model.allTabs.map((t) => t.tab).toList(),
+          currentIndex: model.adjustedIndex,
+          onTap: model.changeTab,
+          backgroundColor: backgroundColor,
+        ),
+      ),
     );
   }
 }

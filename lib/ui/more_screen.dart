@@ -137,10 +137,10 @@ class MoreTab extends StatelessWidget {
     Navigator.of(context, rootNavigator: true)
         .push<List<DynamicTab>>(MaterialPageRoute(
       builder: (context) => EditScreen(
-            maxTabs: state.maxTabs,
-            adaptive: adaptive,
-            tabs: state.allTabs,
-          ),
+        maxTabs: state.maxTabs,
+        adaptive: adaptive,
+        tabs: state.allTabs,
+      ),
       fullscreenDialog: true,
     ))
         .then((newTabs) {
@@ -221,59 +221,57 @@ class CupertinoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TabState>(
       builder: (context, model, child) => CupertinoPageScaffold(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                CupertinoSliverNavigationBar(
-                  backgroundColor: primaryColor,
-                  actionsForegroundColor: accentColor,
-                  transitionBetweenRoutes: !expanded,
-                  heroTag: Key('more-tab'),
-                  largeTitle: Text("More"),
-                  trailing: CupertinoButton(
-                    child: Text("Edit"),
-                    padding: EdgeInsets.all(0.0),
-                    onPressed: onEdit,
-                  ),
-                ),
-                SliverPadding(
-                  padding: MediaQuery.of(context)
-                      .removePadding(
-                        removeTop: true,
-                        removeLeft: true,
-                        removeRight: true,
-                      )
-                      .padding,
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        final i = model.extraTabs[index];
-                        final Icon _icon = i.tab.icon;
-                        final Text _text = i.tab.title;
-                        return DefaultTextStyle(
-                            style:
-                                CupertinoTheme.of(context).textTheme.textStyle,
-                            child: CupertinoListTile(
-                              leading: _icon.icon,
-                              title: _text,
-                              selected:
-                                  expanded ? index == model.subIndex : false,
-                              lastItem: false,
-                              ios: CupertinoListTileData(
-                                style: CupertinoCellStyle.subtitle,
-                                accessory: expanded
-                                    ? CupertinoAccessory.none
-                                    : CupertinoAccessory.disclosureIndicator,
-                              ),
-                              onTap: () => onTap(index),
-                            ));
-                      },
-                      childCount: model.extraTabs.length,
-                    ),
-                  ),
-                ),
-              ],
+        child: CustomScrollView(
+          slivers: <Widget>[
+            CupertinoSliverNavigationBar(
+              backgroundColor: primaryColor,
+              actionsForegroundColor: accentColor,
+              transitionBetweenRoutes: !expanded,
+              heroTag: Key('more-tab'),
+              largeTitle: Text("More"),
+              trailing: CupertinoButton(
+                child: Text("Edit"),
+                padding: EdgeInsets.all(0.0),
+                onPressed: onEdit,
+              ),
             ),
-          ),
+            SliverPadding(
+              padding: MediaQuery.of(context)
+                  .removePadding(
+                    removeTop: true,
+                    removeLeft: true,
+                    removeRight: true,
+                  )
+                  .padding,
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    final i = model.extraTabs[index];
+                    final Icon _icon = i.tab.icon;
+                    final Text _text = i.tab.title;
+                    return DefaultTextStyle(
+                        style: CupertinoTheme.of(context).textTheme.textStyle,
+                        child: CupertinoListTile(
+                          leading: _icon.icon,
+                          title: _text,
+                          selected: expanded ? index == model.subIndex : false,
+                          lastItem: false,
+                          ios: CupertinoListTileData(
+                            style: CupertinoCellStyle.subtitle,
+                            accessory: expanded
+                                ? CupertinoAccessory.none
+                                : CupertinoAccessory.disclosureIndicator,
+                          ),
+                          onTap: () => onTap(index),
+                        ));
+                  },
+                  childCount: model.extraTabs.length,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
