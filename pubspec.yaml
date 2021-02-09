@@ -4,7 +4,7 @@ description: A Flutter plugin for letting the user edit the bottom tabs like the
 version: 1.1.1-nullsafety.1
 author: Rody Davis <rody.davis.jr@gmail.com>
 homepage: https://github.com/rodydavis/plugins
-issue_tracker: https://github.com/rodydavis/dynamic_tabs
+repository: https://github.com/rodydavis/dynamic_tabs
 
 environment:
   sdk: '>=2.12.0-259.8.beta <3.0.0'
