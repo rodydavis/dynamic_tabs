@@ -5,6 +5,8 @@
 
 A Flutter plugin for letting the user edit the bottom tabs like the Cupertino iTunes App.
 
+Online demo [here](https://rodydavis.github.io/dynamic_tabs/)!
+
 ## Getting Started
 
 - Set `persistIndex` to `true` for saving the index of the current tab to disk, every time the app launches it will open the last tab opened
