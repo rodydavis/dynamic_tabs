@@ -1,15 +1,14 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../data/classes/tab.dart';
 
 class GridTabItem extends StatelessWidget {
   const GridTabItem({
-    Key key,
-    @required this.tab,
+    Key? key,
+    required this.tab,
     this.active = true,
     this.adaptive = false,
     this.draggable = false,
@@ -22,14 +21,14 @@ class GridTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Icon _icon = tab.tab.icon;
-    final Text _title = tab.tab.title;
+    final Icon _icon = tab.tab.icon as Icon;
+    final Text _title = Text(tab.tab.label!);
     if (draggable) {
       return Draggable(
         feedback: DefaultTextStyle(
-            style: adaptive && Platform.isIOS
+            style: adaptive && defaultTargetPlatform == TargetPlatform.iOS
                 ? CupertinoTheme.of(context).textTheme.textStyle
-                : Theme.of(context).textTheme.title,
+                : Theme.of(context).textTheme.title!,
             child: Container(
               width: 120.0,
               height: 80.0,
@@ -41,7 +40,7 @@ class GridTabItem extends StatelessWidget {
                     size: 35.0,
                   ),
                   AutoSizeText(
-                    _title.data,
+                    _title.data!,
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30.0),
@@ -57,7 +56,7 @@ class GridTabItem extends StatelessWidget {
               color: active ? null : Colors.grey,
             ),
             Text(
-              _title.data,
+              _title.data!,
               textAlign: TextAlign.center,
               style: active ? null : TextStyle(color: Colors.grey),
             ),
@@ -76,13 +75,14 @@ class GridTabItem extends StatelessWidget {
             color: Colors.grey,
           ),
           Text(
-            _title.data,
+            _title.data!,
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
         ],
       );
     }
+    
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

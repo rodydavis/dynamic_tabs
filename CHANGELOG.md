@@ -1,3 +1,7 @@
+## 1.1.0-nullsafety
+
+* Null Safety
+
 ## 1.0.2 - 05.28.2019
 
 * Adding `masterDetailOnMoreTab` which will show a splitview for tablets in landscape
