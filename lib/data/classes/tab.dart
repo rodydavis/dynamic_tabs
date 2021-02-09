@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class DynamicTab {
   const DynamicTab({
-    @required this.child,
-    @required this.tab,
-    @required this.tag,
+    required this.child,
+    required this.tab,
+    required this.tag,
   });
 
   final Widget child;

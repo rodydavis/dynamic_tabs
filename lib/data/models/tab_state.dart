@@ -1,13 +1,14 @@
-import 'package:dynamic_tabs/data/classes/tab.dart';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../classes/tab.dart';
 
 class TabState extends ChangeNotifier {
   int _currentIndex = 0;
-  List<DynamicTab> _items;
+  List<DynamicTab>? _items;
   int _maxTabs = 4;
   bool _persistIndex = false;
-  LocalStorage _storage;
+  late SharedPreferences _storage;
 
   int get currentIndex => _currentIndex;
 
@@ -26,8 +27,7 @@ class TabState extends ChangeNotifier {
     _maxTabs = max;
     notifyListeners();
 
-    _storage = LocalStorage('$tag-tab-state');
-    await _storage.ready;
+    _storage = await SharedPreferences.getInstance();
 
     _loadSavedTabs();
     _loadIndex();
@@ -35,7 +35,7 @@ class TabState extends ChangeNotifier {
 
   bool get isMoreTab => _currentIndex >= _maxTabs;
   bool get showEditTab => (_items?.length ?? 0) > _maxTabs;
-  Widget get child => _items[_currentIndex].child;
+  Widget get child => _items![_currentIndex].child;
 
   void changeMaxTabs(int value) {
     assert(value >= 2);
@@ -53,14 +53,14 @@ class TabState extends ChangeNotifier {
   void _loadSavedTabs() async {
     List<String> _list = [];
     try {
-      final _data = _storage.getItem(tabsKey);
+      final _data = _storage.getStringList(tabsKey);
       if (_data != null) {
         _list = List.from(_data);
       }
     } catch (e) {
       print("Couldn't read tabs: $e");
     }
-    if (_list.length == _items.length) {
+    if (_list.length == _items!.length) {
       changeTabOrder(_list);
     }
   }
@@ -70,7 +70,7 @@ class TabState extends ChangeNotifier {
     if (_tabs != null && _tabs.isNotEmpty) {
       List<DynamicTab> _newOrder = [];
       for (var item in _tabs) {
-        _newOrder.add(_items.firstWhere((t) => t.tag == item));
+        _newOrder.add(_items!.firstWhere((t) => t.tag == item));
       }
       _items = _newOrder;
       notifyListeners();
@@ -79,8 +79,8 @@ class TabState extends ChangeNotifier {
   }
 
   void _saveNewTabs() async {
-    final _list = _items.map((t) => t.tag).toList();
-    await _storage.setItem(tabsKey, _list);
+    final _list = _items!.map((t) => t.tag).toList();
+    await _storage.setStringList(tabsKey, _list);
   }
 
   void changeTab(int value) {
@@ -91,7 +91,7 @@ class TabState extends ChangeNotifier {
 
   void _loadIndex() {
     if (_persistIndex) {
-      int _index = _storage.getItem(navKey);
+      int _index = _storage.getInt(navKey);
       if (_index != null) {
         if (_index > _maxTabs) {
           _index = 0;
@@ -104,12 +104,12 @@ class TabState extends ChangeNotifier {
   }
 
   void _saveIndex() {
-    _storage.setItem(navKey, _currentIndex);
+    _storage.setInt(navKey, _currentIndex);
   }
 
   void reset() {
     _storage.clear();
-    changeTabOrder(_items.map((t) => t.tag).toList());
+    changeTabOrder(_items!.map((t) => t.tag).toList());
     _currentIndex = 0;
     _saveIndex();
   }

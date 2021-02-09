@@ -3,34 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:dynamic_tabs/dynamic_tabs.dart';
 
-import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 
-// The existing imports
-// !! Keep your existing impots here !!
-
-/// main is entry point of Flutter application
-void main() {
-  // Desktop platforms aren't a valid platform.
-  _setTargetPlatformForDesktop();
-
-  return runApp(MyApp());
-}
-
-/// If the current platform is desktop, override the default platform to
-/// a supported platform (iOS for macOS, Android for Linux and Windows).
-/// Otherwise, do nothing.
-void _setTargetPlatformForDesktop() {
-  TargetPlatform targetPlatform;
-  if (Platform.isMacOS) {
-    targetPlatform = TargetPlatform.iOS;
-  } else if (Platform.isLinux || Platform.isWindows) {
-    targetPlatform = TargetPlatform.android;
-  }
-  if (targetPlatform != null) {
-    debugDefaultTargetPlatformOverride = targetPlatform;
-  }
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
@@ -41,8 +16,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
-      home: new HomeScreen(),
+      home: HomeScreen(),
       routes: _buildRoutes(context),
     );
   }
@@ -84,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Info",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("Info"),
+            label: "Info",
             icon: Icon(Icons.info),
           ),
           tag: "info", // Must Be Unique
@@ -95,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Account",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("Account"),
+            label: "Account",
             icon: Icon(Icons.account_circle),
           ),
           tag: "account", // Must Be Unique
@@ -106,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Help",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("Help"),
+            label: "Help",
             icon: Icon(Icons.help),
           ),
           tag: "help", // Must Be Unique
@@ -117,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Settings",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("Settings"),
+            label: "Settings",
             icon: Icon(Icons.settings),
           ),
           tag: "settings", // Must Be Unique
@@ -128,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Theme",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("Theme"),
+            label: "Theme",
             icon: Icon(Icons.palette),
           ),
           tag: "theme", // Must Be Unique
@@ -139,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "FAQ",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("FAQ"),
+            label: "FAQ",
             icon: Icon(Icons.perm_contact_calendar),
           ),
           tag: "faq", // Must Be Unique
@@ -150,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Contacts",
           ),
           tab: BottomNavigationBarItem(
-            title: Text("Contacts"),
+            label: "Contacts",
             icon: Icon(Icons.people),
           ),
           tag: "contacts", // Must Be Unique
@@ -169,7 +145,7 @@ class RandomScreen extends StatelessWidget {
   final Color color;
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       return CupertinoPageScaffold(
         child: CustomScrollView(
           slivers: <Widget>[

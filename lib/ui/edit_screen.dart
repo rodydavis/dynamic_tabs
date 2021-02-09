@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../data/classes/tab.dart';
@@ -9,8 +8,8 @@ import 'common/grid_item.dart';
 class EditScreen extends StatefulWidget {
   const EditScreen({
     this.adaptive = false,
-    @required this.tabs,
-    @required this.maxTabs,
+    required this.tabs,
+    required this.maxTabs,
   });
 
   final bool adaptive;
@@ -22,7 +21,7 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
-  List<DynamicTab> _tabs;
+  List<DynamicTab>? _tabs;
   @override
   void initState() {
     _tabs = widget.tabs;
@@ -31,7 +30,7 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.adaptive && Platform.isIOS) {
+    if (widget.adaptive && defaultTargetPlatform == TargetPlatform.iOS) {
       return DefaultTextStyle(
           style: CupertinoTheme.of(context).textTheme.textStyle,
           child: CupertinoPageScaffold(
@@ -57,7 +56,7 @@ class _EditScreenState extends State<EditScreen> {
                         adaptive: widget.adaptive,
                         maxTabs: widget.maxTabs,
                         tabs: _tabs,
-                        onChanged: (List<DynamicTab> tabs) {
+                        onChanged: (tabs) {
                           setState(() {
                             _tabs = tabs;
                           });
@@ -71,7 +70,7 @@ class _EditScreenState extends State<EditScreen> {
           ));
     }
     return DefaultTextStyle(
-        style: Theme.of(context).textTheme.display1,
+        style: Theme.of(context).textTheme.display1!,
         child: Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -94,7 +93,7 @@ class _EditScreenState extends State<EditScreen> {
                       adaptive: widget.adaptive,
                       maxTabs: widget.maxTabs,
                       tabs: _tabs,
-                      onChanged: (List<DynamicTab> tabs) {
+                      onChanged: (tabs) {
                         setState(() {
                           _tabs = tabs;
                         });
@@ -119,7 +118,7 @@ class _EditScreenState extends State<EditScreen> {
                 "Drag the icons to\norganize tabs.",
                 style: Theme.of(context)
                     .textTheme
-                    .display1
+                    .headline4!
                     .copyWith(fontSize: 22.0),
                 textAlign: TextAlign.center,
               ),
@@ -130,10 +129,10 @@ class _EditScreenState extends State<EditScreen> {
                 child: GridView.count(
                   shrinkWrap: true,
                   crossAxisCount: (constraints.maxWidth / 100).round(),
-                  children: _tabs
+                  children: _tabs!
                       .map(
                         (t) => GridTabItem(
-                          active: _tabs.indexOf(t) >= widget.maxTabs,
+                          active: _tabs!.indexOf(t) >= widget.maxTabs,
                           tab: t,
                           adaptive: widget.adaptive,
                           draggable: true,
@@ -156,24 +155,24 @@ class _EditScreenState extends State<EditScreen> {
 
 class BottomEditableTabBar extends StatefulWidget {
   const BottomEditableTabBar({
-    @required this.maxTabs,
-    @required this.tabs,
-    @required this.adaptive,
-    @required this.onChanged,
+    required this.maxTabs,
+    required this.tabs,
+    required this.adaptive,
+    required this.onChanged,
   });
 
   final bool adaptive;
   final int maxTabs;
-  final List<DynamicTab> tabs;
-  final ValueChanged<List<DynamicTab>> onChanged;
+  final List<DynamicTab>? tabs;
+  final ValueChanged<List<DynamicTab>?> onChanged;
 
   @override
   _BottomEditableTabBarState createState() => _BottomEditableTabBarState();
 }
 
 class _BottomEditableTabBarState extends State<BottomEditableTabBar> {
-  List<DynamicTab> _tabs;
-  int _previewIndex;
+  List<DynamicTab>? _tabs;
+  int? _previewIndex;
 
   @override
   void initState() {
@@ -184,7 +183,7 @@ class _BottomEditableTabBarState extends State<BottomEditableTabBar> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = [];
-    List<DynamicTab> _targets = _tabs.take(widget.maxTabs).toList();
+    List<DynamicTab> _targets = _tabs!.take(widget.maxTabs).toList();
     for (var t in _targets) {
       _children.add(DragTarget<String>(
         builder: (context, possible, rejected) {
@@ -198,7 +197,7 @@ class _BottomEditableTabBarState extends State<BottomEditableTabBar> {
             // draggable: true,
           );
         },
-        onWillAccept: (String data) {
+        onWillAccept: (String? data) {
           setState(() {
             _previewIndex = _targets.indexOf(t);
           });
@@ -210,14 +209,14 @@ class _BottomEditableTabBarState extends State<BottomEditableTabBar> {
           });
         },
         onAccept: (String data) {
-          final DynamicTab _baseTab = _targets[_previewIndex];
-          final DynamicTab _newTab = _tabs.firstWhere((t) => t.tag == data);
-          final int _oldIndex = _tabs.indexOf(_newTab);
+          final DynamicTab _baseTab = _targets[_previewIndex!];
+          final DynamicTab _newTab = _tabs!.firstWhere((t) => t.tag == data);
+          final int _oldIndex = _tabs!.indexOf(_newTab);
 
-          _tabs.removeAt(_previewIndex);
-          _tabs.insert(_previewIndex, _newTab);
-          _tabs.removeAt(_oldIndex);
-          _tabs.insert(_oldIndex, _baseTab);
+          _tabs!.removeAt(_previewIndex!);
+          _tabs!.insert(_previewIndex!, _newTab);
+          _tabs!.removeAt(_oldIndex);
+          _tabs!.insert(_oldIndex, _baseTab);
 
           widget.onChanged(_tabs);
 
