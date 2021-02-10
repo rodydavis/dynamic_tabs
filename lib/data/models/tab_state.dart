@@ -66,7 +66,7 @@ class TabState extends ChangeNotifier {
   }
 
   void changeTabOrder(List<String> _list) {
-    List<String> _tabs = _list ?? [];
+    List<String> _tabs = _list;
     if (_tabs != null && _tabs.isNotEmpty) {
       List<DynamicTab> _newOrder = [];
       for (var item in _tabs) {

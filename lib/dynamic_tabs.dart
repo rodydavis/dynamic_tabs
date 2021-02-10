@@ -29,7 +29,6 @@ class DynamicTabScaffold extends StatelessWidget {
     this.selectedColor,
   })  : adaptive = false,
         routes = null,
-        assert(tabs != null),
         assert(tabs.length >= 2);
 
   const DynamicTabScaffold.adaptive({
@@ -49,7 +48,6 @@ class DynamicTabScaffold extends StatelessWidget {
   })  : adaptive = true,
         type = materialType,
         iconSize = materialIconSize,
-        assert(tabs != null),
         assert(tabs.length >= 2);
 
   final bool adaptive;
@@ -230,7 +228,7 @@ class DesktopView extends StatelessWidget {
                           ListTile(
                             selected: i == model.currentIndex,
                             leading: model.allTabs[i].tab.icon,
-                            title: model.allTabs[i].tab.title,
+                            title: Text(model.allTabs[i].tab.label ?? ''),
                             onTap: () {
                               model.changeTab(i);
                             },
