@@ -114,7 +114,17 @@ class TabState extends ChangeNotifier {
     _saveIndex();
   }
 
-  String get navKey => "nav-key";
+  String get navKey => 'nav-key';
 
-  String get tabsKey => "tabs-key";
+  String get tabsKey => 'tabs-key';
+
+  List<BottomNavigationBarItem> get tabs => showEditTab
+      ? <BottomNavigationBarItem>[
+          ...mainTabs.map((e) => e.tab).toList(),
+          const BottomNavigationBarItem(
+            label: 'More',
+            icon: Icon(Icons.more_horiz),
+          )
+        ]
+      : <BottomNavigationBarItem>[...allTabs.map((e) => e.tab).toList()];
 }

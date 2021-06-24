@@ -1,3 +1,8 @@
+## 1.1.2
+
+* Cleaning up lint errors
+- Slight refactoring
+
 ## 1.1.1-nullsafety
 
 * Null Safety

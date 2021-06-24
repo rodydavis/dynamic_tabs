@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'data/classes/tab.dart';
 import 'data/models/index.dart';
 import 'ui/more_screen.dart';
+import 'ui/platforms/cupertino.dart';
+import 'ui/platforms/desktop.dart';
+import 'ui/platforms/material.dart';
 
 export 'data/classes/tab.dart';
 
@@ -96,7 +99,7 @@ class DynamicTabScaffold extends StatelessWidget {
           }
 
           if (adaptive && isDesktop()) {
-            return new DesktopView(
+            return DesktopView(
               routes: routes,
               breakpoint: breakpoint,
               masterDetailOnMoreTab: masterDetailOnMoreTab,
@@ -106,7 +109,7 @@ class DynamicTabScaffold extends StatelessWidget {
             );
           }
 
-          return new MaterialView(
+          return MaterialView(
             routes: routes,
             breakpoint: breakpoint,
             masterDetailOnMoreTab: masterDetailOnMoreTab,
@@ -120,188 +123,6 @@ class DynamicTabScaffold extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class MaterialView extends StatelessWidget {
-  const MaterialView({
-    Key? key,
-    required this.routes,
-    required this.adaptive,
-    required this.moreTabAccentColor,
-    required this.moreTabPrimaryColor,
-    required this.selectedColor,
-    required this.maxTabs,
-    required this.backgroundColor,
-    required this.type,
-    required this.breakpoint,
-    required this.masterDetailOnMoreTab,
-  }) : super(key: key);
-
-  final bool adaptive;
-  final Color? backgroundColor;
-  final int maxTabs;
-  final Color? moreTabAccentColor;
-  final Color? moreTabPrimaryColor;
-  final Map? routes;
-  final Color? selectedColor;
-  final BottomNavigationBarType type;
-  final bool masterDetailOnMoreTab;
-  final double breakpoint;
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final model = TabProvider.of(context)!.state;
-        return Scaffold(
-          body: ContentView(
-            routes: routes as Map<String, Widget Function(BuildContext)>?,
-            adaptive: adaptive,
-            breakpoint: breakpoint,
-            masterDetailOnMoreTab: masterDetailOnMoreTab,
-            moreTabAccentColor: moreTabAccentColor,
-            moreTabPrimaryColor: moreTabPrimaryColor,
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: selectedColor,
-            items: model.showEditTab
-                ? (model.mainTabs.map((t) => t.tab).toList()
-                  ..add(BottomNavigationBarItem(
-                    label: "More",
-                    icon: Icon(Icons.more_horiz),
-                  )))
-                : model.allTabs.map((t) => t.tab).toList(),
-            currentIndex: model.adjustedIndex,
-            onTap: model.changeTab,
-            fixedColor: backgroundColor ?? Theme.of(context).primaryColor,
-            type: type,
-            // unselectedItemColor: unselectedItemColor ?? Colors.grey,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class DesktopView extends StatelessWidget {
-  const DesktopView({
-    Key? key,
-    required this.routes,
-    required this.adaptive,
-    required this.moreTabAccentColor,
-    required this.moreTabPrimaryColor,
-    required this.breakpoint,
-    required this.masterDetailOnMoreTab,
-  }) : super(key: key);
-
-  final bool adaptive;
-  final Color? moreTabAccentColor;
-  final Color? moreTabPrimaryColor;
-  final Map? routes;
-  final bool masterDetailOnMoreTab;
-  final double breakpoint;
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final model = TabProvider.of(context)!.state;
-        return Scaffold(
-          body: ContentView(
-            routes: routes as Map<String, Widget Function(BuildContext)>?,
-            adaptive: adaptive,
-            breakpoint: breakpoint,
-            masterDetailOnMoreTab: masterDetailOnMoreTab,
-            moreTabAccentColor: moreTabAccentColor,
-            moreTabPrimaryColor: moreTabPrimaryColor,
-          ),
-          drawer: Drawer(
-            child: Container(
-              child: SafeArea(
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        for (var i = 0; i < model.allTabs.length; i++) ...[
-                          ListTile(
-                            selected: i == model.currentIndex,
-                            leading: model.allTabs[i].tab.icon,
-                            title: Text(model.allTabs[i].tab.label ?? ''),
-                            onTap: () {
-                              model.changeTab(i);
-                            },
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class CupertinoView extends StatelessWidget {
-  const CupertinoView({
-    Key? key,
-    required this.selectedColor,
-    required this.maxTabs,
-    required this.backgroundColor,
-    required this.adaptive,
-    required this.routes,
-    required this.moreTabAccentColor,
-    required this.moreTabPrimaryColor,
-    required this.breakpoint,
-    required this.masterDetailOnMoreTab,
-  }) : super(key: key);
-
-  final bool adaptive;
-  final Color? backgroundColor;
-  final int maxTabs;
-  final Color? moreTabAccentColor;
-  final Color? moreTabPrimaryColor;
-  final Map<String, WidgetBuilder>? routes;
-  final Color? selectedColor;
-  final bool masterDetailOnMoreTab;
-  final double breakpoint;
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final model = TabProvider.of(context)!.state;
-        return CupertinoTabScaffold(
-          tabBuilder: (BuildContext context, int index) {
-            return ContentView(
-              routes: routes,
-              adaptive: adaptive,
-              breakpoint: breakpoint,
-              masterDetailOnMoreTab: masterDetailOnMoreTab,
-              moreTabAccentColor: moreTabAccentColor,
-              moreTabPrimaryColor: moreTabPrimaryColor,
-            );
-          },
-          tabBar: CupertinoTabBar(
-            activeColor: selectedColor,
-            items: model.showEditTab
-                ? (model.mainTabs.map((t) => t.tab).toList()
-                  ..add(BottomNavigationBarItem(
-                    label: "More",
-                    icon: Icon(Icons.more_horiz),
-                  )))
-                : model.allTabs.map((t) => t.tab).toList(),
-            currentIndex: model.adjustedIndex,
-            onTap: model.changeTab,
-            backgroundColor: backgroundColor,
-          ),
-        );
-      },
     );
   }
 }
@@ -384,11 +205,10 @@ class ContentView extends StatelessWidget {
 class TabProvider extends InheritedWidget {
   const TabProvider({
     Key? key,
-    required this.child,
+    required Widget child,
     required this.state,
   }) : super(key: key, child: child);
 
-  final Widget child;
   final TabState state;
 
   static TabProvider? of(BuildContext context) {
@@ -397,6 +217,6 @@ class TabProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(TabProvider oldWidget) {
-    return this.state != oldWidget.state;
+    return state != oldWidget.state;
   }
 }
